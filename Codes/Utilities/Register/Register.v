@@ -5,6 +5,10 @@ module Register(clk, rst, ld, regIn, regOut);
     input [(SIZE-1):0] regIn;
     output reg [(SIZE-1):0] regOut;
     
+    initial begin
+        regOut = 0;
+    end
+
     always@(posedge clk, posedge rst) begin
         if(rst)
             regOut <= 0;
