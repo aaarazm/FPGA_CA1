@@ -2,8 +2,8 @@ module myFIR(clk, rst, inputValid, FIR_input, outputValid, FIR_output);
 
     parameter InputWidth = 16, OutputWidth = 38;
 
-    input [InputWidth-1:0] FIR_input;
     input clk, rst, inputValid;
+    input  [InputWidth-1:0]  FIR_input;
     output [OutputWidth-1:0] FIR_output;
     output outputValid;
 

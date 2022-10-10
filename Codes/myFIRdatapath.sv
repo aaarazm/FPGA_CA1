@@ -2,16 +2,16 @@ module myFIRdatapath(din, address, dout, clk, rst, shift, flush);
 
     parameter InputWidth = 16, OutputWidth = 38;
 
-    input [InputWidth-1:0] din;
-    input [5:0] address;
     input clk, rst, shift, flush;
+    input  [InputWidth-1:0]  din;
+    input  [5:0]             address;
     output [OutputWidth-1:0] dout;
 
     logic [InputWidth-1:0]  coeffs [0:63];
 
-    wire [InputWidth-1:0] inpBufferOut;
+    wire [InputWidth-1:0]     inpBufferOut;
     wire [(InputWidth*2)-1:0] multRes, multResPipe;
-    wire [OutputWidth-1:0] multResExtended, addRes, result, resPipe;
+    wire [OutputWidth-1:0]    multResExtended, addRes, result, resPipe;
 
     initial
     begin
