@@ -31,16 +31,37 @@ module myFIR_tb;
     always #10 clkk <= ~clkk;
 
     logic ps, ns;
-    parameter input_valid = 0, wait_for_output = 1;
+    parameter [1:0] input_valid = 0, increment = 1, wait_for_output = 2;
 
     always @(ps, outputValid) begin
         ns = input_valid;
         case(ps)
-            input_valid: ns = wait_for_output;
+            input_valid: ns = increment;
+            increment: ns = wait_for_output;
             wait_for_output: ns = outputValid ? input_valid : wait_for_output;
         endcase
     end
 
-    always @(ps)
+    always @(ps) begin
+        inputValid = 1'b0;
+        case(ps)
+            input_valid: inputValid = 1'b1;
+            increment: inputCount = inputCount + 1;
+        endcase
+    end
 
-    always @(posedge clkk)
+
+    always @(posedge clkk) begin
+        if(rst_n)
+            ps <= inputValid;
+        else
+            ps <= ns;
+    end
+
+    initial begin
+        #2 rst_n = 1'b1;
+        #13 rst_n = 1'b0;
+        #1000 $stop;
+    end
+
+endmodule

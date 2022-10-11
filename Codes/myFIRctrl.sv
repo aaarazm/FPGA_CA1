@@ -6,7 +6,7 @@ module myFIRctrl (clk, rst, inputValid, outputValid, address, flush, shift);
 
     logic [1:0] ps, ns;
 
-    integer countCycles = 0;
+    logic [6:0] countCycles = 7'b0000000;
     logic [5:0] countAddr = 6'b000000;
 
     assign address = countAddr;
@@ -21,7 +21,7 @@ module myFIRctrl (clk, rst, inputValid, outputValid, address, flush, shift);
             init: ns = execute;
 
             execute: begin
-                if(countCycles === 64)
+                if(countCycles == 64)
                     ns = output_valid;
                 else
                     ns = execute;
