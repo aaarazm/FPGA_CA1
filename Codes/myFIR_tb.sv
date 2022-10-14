@@ -1,7 +1,7 @@
 `timescale 1ns/1ns
 module myFIR_tb;
 
-    parameter InputWidth = 16, OutputWidth = 38,  FIR_size = 64,memLength = 221184;
+    parameter InputWidth = 16, OutputWidth = 38,  FIR_size = 64, memLength = 221184;
 
     logic [InputWidth-1:0]   din;
     wire  [OutputWidth-1:0]  dout;
@@ -33,7 +33,7 @@ module myFIR_tb;
     logic [1:0] ps, ns;
     parameter [1:0] input_valid = 0, waitForShift = 1, increment = 2, wait_for_output = 3;
 
-    always @(ps, outputValid) begin
+    always @(ps, outputValid) begin: FSM_ns
         ns = input_valid;
         case(ps)
             input_valid: ns = waitForShift;
@@ -43,7 +43,7 @@ module myFIR_tb;
         endcase
     end
 
-    always @(ps) begin
+    always @(ps) begin: FSM_signals
         inputValid = 1'b0;
         case(ps)
             input_valid: inputValid = 1'b1;
@@ -52,7 +52,7 @@ module myFIR_tb;
     end
 
 
-    always @(posedge clkk) begin
+    always @(posedge clkk) begin: next_state
         if(rst_n)
             ps <= inputValid;
         else

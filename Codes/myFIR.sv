@@ -1,6 +1,7 @@
 module myFIR(clk, rst, inputValid, FIR_input, outputValid, FIR_output);
 
     parameter InputWidth = 16, OutputWidth = 38, FIR_size = 64;
+    localparam address_size = $clog2(FIR_size);
 
     input clk, rst, inputValid;
     input  [InputWidth-1:0]  FIR_input;
@@ -8,7 +9,7 @@ module myFIR(clk, rst, inputValid, FIR_input, outputValid, FIR_output);
     output outputValid;
 
     wire flush, shift, freeze;
-    wire [5:0] address;
+    wire [address_size-1:0] address;
 
     myFIRdatapath #(InputWidth, OutputWidth, FIR_size) uut1
     (

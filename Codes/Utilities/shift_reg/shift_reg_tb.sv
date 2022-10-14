@@ -1,12 +1,12 @@
 `timescale 1ns/1ns
 module shift_reg_tb;
-    parameter dataWidth = 16;
+    parameter dataWidth = 16, size = 64;
     logic clk = 1'b0, shift = 1'b0, rst;
     logic [dataWidth-1:0] din;
     logic [5:0] address = 6'b000000;
     wire [dataWidth-1:0] dout;
 
-    shift_reg #(dataWidth) UUT (
+    shift_reg #(dataWidth, size) UUT (
         .clk(clk),
         .shift(shift),
         .rst(rst),
@@ -14,8 +14,8 @@ module shift_reg_tb;
         .address(address),
         .dout(dout)
     );
-
-    always #10 clk <= ~clk;
+    localparam period = 10;
+    always #(period/2) clk <= ~clk;
     initial begin
         rst = 1'b0;
         #31 rst = 1'b1;

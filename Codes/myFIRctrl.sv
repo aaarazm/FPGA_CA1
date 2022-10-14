@@ -63,7 +63,7 @@ module myFIRctrl (clk, rst, inputValid, outputValid, address, flush, shift, free
     end
 
 
-    always @(posedge clk) begin: next_state
+    always @(posedge clk, posedge rst) begin: next_state
         if(rst)
             ps <= input_valid;
         else
