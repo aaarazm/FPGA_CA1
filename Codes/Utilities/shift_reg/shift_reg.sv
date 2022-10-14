@@ -9,7 +9,7 @@ module shift_reg(clk, shift, rst, din, address, dout);
     assign J[0] = din;
     genvar i;
     generate
-        for(i = 0; i < 64; i = i + 1) begin
+        for(i = 0; i < 64; i = i + 1) begin: shift_reg_file
             Register #(dataWidth) RXX (.clk(clk), .rst(rst), .ld(shift), .regIn(J[i]), .regOut(J[i+1]));
         end
     endgenerate
