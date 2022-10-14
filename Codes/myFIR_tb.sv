@@ -28,7 +28,8 @@ module myFIR_tb;
         $readmemb("outputs.txt", input_data);
     end
 
-    always #10 clkk <= ~clkk;
+    localparam period = 20;
+    always #(period/2) clkk <= ~clkk;
 
     logic [1:0] ps, ns;
     parameter [1:0] input_valid = 0, waitForShift = 1, increment = 2, wait_for_output = 3;

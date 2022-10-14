@@ -42,8 +42,6 @@ module myFIRctrl (clk, rst, inputValid, outputValid, address, flush, shift, free
             //input_valid:
 
             init: begin
-                // countCycles = 0;
-                // countAddr <= 0;
                 shift = 1'b1;
                 flush = 1'b1;
             end
