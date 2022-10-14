@@ -14,8 +14,8 @@ module shift_reg_tb;
         .address(address),
         .dout(dout)
     );
-    localparam period = 10;
-    always #(period/2) clk <= ~clk;
+
+    always #10 clk <= ~clk;
     initial begin
         rst = 1'b0;
         #31 rst = 1'b1;

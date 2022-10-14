@@ -11,7 +11,7 @@ module myFIR(clk, rst, inputValid, FIR_input, outputValid, FIR_output);
     wire flush, shift, freeze;
     wire [address_size-1:0] address;
 
-    myFIRdatapath #(InputWidth, OutputWidth) uut1
+    myFIRdatapath #(InputWidth, OutputWidth, FIR_size) uut1
     (
         .din(FIR_input),
         .address(address),
@@ -19,10 +19,11 @@ module myFIR(clk, rst, inputValid, FIR_input, outputValid, FIR_output);
         .clk(clk),
         .rst(rst),
         .shift(shift),
-        .flush(flush)
+        .flush(flush),
+        .freeze(freeze)
     );
 
-    myFIRctrl uut2
+    myFIRctrl #(FIR_size) uut2
     (
         .clk(clk),
         .rst(rst),
@@ -30,7 +31,8 @@ module myFIR(clk, rst, inputValid, FIR_input, outputValid, FIR_output);
         .outputValid(outputValid),
         .address(address),
         .flush(flush),
-        .shift(shift)
+        .shift(shift),
+        .freeze(freeze)
     );
 
 endmodule

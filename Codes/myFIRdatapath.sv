@@ -1,24 +1,24 @@
-module myFIRdatapath(din, address, dout, clk, rst, shift, flush);
+module myFIRdatapath(din, address, dout, clk, rst, shift, flush, freeze);
 
-    parameter InputWidth = 16, OutputWidth = 38;
+    parameter InputWidth = 16, OutputWidth = 38, FIR_size = 64;
 
-    input clk, rst, shift, flush;
+    input clk, rst, shift, flush, freeze;
     input  [InputWidth-1:0]  din;
     input  [5:0]             address;
     output [OutputWidth-1:0] dout;
 
-    logic [InputWidth-1:0]  coeffs [0:63];
+    logic [InputWidth-1:0]  coeffs [0:FIR_size-1];
 
     wire [InputWidth-1:0]     inpBufferOut;
     wire [(InputWidth*2)-1:0] multRes, multResPipe;
-    wire [OutputWidth-1:0]    multResExtended, addRes, result, resPipe;
+    wire [OutputWidth-1:0]    multResExtended, addRes, result;
 
     initial
     begin
     $readmemb("coeffs.txt", coeffs);
     end
 
-    shift_reg #(InputWidth, FIR_size) inpBuffer
+    shift_reg #(InputWidth) inpBuffer
     (
         .clk(clk),
         .shift(shift),
@@ -38,7 +38,7 @@ module myFIRdatapath(din, address, dout, clk, rst, shift, flush);
     Register #(InputWidth*2) multPipe
     (
         .clk(clk),
-        .rst((rst | flush)),
+        .rst((rst | flush | freeze)),
         .ld(1'b1),
         .regIn(multRes),
         .regOut(multResPipe)
@@ -53,7 +53,7 @@ module myFIRdatapath(din, address, dout, clk, rst, shift, flush);
     adder #(OutputWidth) add1
     (
         .a(multResExtended),
-        .b(resPipe),
+        .b(result),
         .res(addRes)
     );
 
@@ -65,6 +65,15 @@ module myFIRdatapath(din, address, dout, clk, rst, shift, flush);
         .regIn(addRes),
         .regOut(result)
     );
+
+//    Register #(OutputWidth) ResultPipe
+//    (
+//        .clk(clk),
+//        .rst((rst | flush)),
+//        .ld(1'b1),
+//        .regIn(result),
+//        .regOut(resPipe)
+//    );
 
     assign dout = result;
 
