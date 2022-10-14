@@ -1,32 +1,27 @@
-module myFIRctrl (clk, rst, inputValid, outputValid, address, flush, shift, freeze);
-
-    parameter FIR_size = 64;
-    localparam address_size = $clog2(FIR_size);
+module myFIRctrl (clk, rst, inputValid, outputValid, address, flush, shift);
 
     input clk, rst, inputValid;
-    output logic outputValid, flush, shift, freeze;
-    output [address_size-1:0] address;
+    output logic outputValid, flush, shift;
+    output [5:0] address;
 
-    logic [2:0] ps, ns;
+    logic [1:0] ps, ns;
 
-    logic [address_size:0] countCycles = 0;
-    logic [address_size-1:0] countAddr = 0;
+    logic [6:0] countCycles = 7'b0000000;
+    logic [5:0] countAddr = 6'b000000;
 
     assign address = countAddr;
 
-    parameter [2:0] input_valid = 0, init = 1, waitForShift = 2, execute = 3, output_valid = 4;
+    parameter [1:0] input_valid = 0, init = 1, execute = 2, output_valid = 3;
 
-    always @(ps, inputValid, countCycles) begin: FSM1 // does countCycles need to be at sensitivity list?
+    always @(ps, inputValid, countCycles) begin // does countCycles need to be at sensitivity list?
         ns = input_valid;
         case(ps)
             input_valid: ns = inputValid ? init : input_valid;
 
-            init: ns = waitForShift;
-
-            waitForShift: ns = execute;
+            init: ns = execute;
 
             execute: begin
-                if(countCycles == FIR_size)
+                if(countCycles == 64)
                     ns = output_valid;
                 else
                     ns = execute;
@@ -36,27 +31,28 @@ module myFIRctrl (clk, rst, inputValid, outputValid, address, flush, shift, free
         endcase
     end
 
-    always @(ps) begin: FSM2
-        flush = 1'b0; outputValid = 1'b0; shift = 1'b0; freeze = 1'b0;
+    always @(ps) begin
+        flush = 1'b0; outputValid = 1'b0; shift = 1'b0;
         case(ps)
             //input_valid:
 
             init: begin
-                // countCycles = 0;
-                // countAddr <= 0;
+                countCycles = 1'b0;
+                countAddr <= 1'b0;
                 shift = 1'b1;
                 flush = 1'b1;
             end
 
-            //execute:
-
-            output_valid: begin
-                outputValid = 1'b1;
-                freeze = 1'b1;
+            execute: begin
+                countCycles = countCycles + 1;
+                countAddr <= countAddr + 1;
             end
+
+            output_valid: outputValid = 1'b1;
         endcase
     end
 
+<<<<<<< HEAD
     always @(posedge clk) begin: counting
         countCycles <= (ns == execute) ? (countCycles + 1) : 0;
         countAddr <= (ns == execute) ? (countAddr + 1) : 0;
@@ -64,6 +60,9 @@ module myFIRctrl (clk, rst, inputValid, outputValid, address, flush, shift, free
 
 
     always @(posedge clk, posedge rst) begin: next_state
+=======
+    always @(posedge clk) begin
+>>>>>>> parent of ed73973 (changes from backup files uploaded)
         if(rst)
             ps <= input_valid;
         else
