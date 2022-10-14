@@ -52,7 +52,6 @@ module myFIRctrl (clk, rst, inputValid, outputValid, address, flush, shift);
         endcase
     end
 
-<<<<<<< HEAD
     always @(posedge clk) begin: counting
         countCycles <= (ns == execute) ? (countCycles + 1) : 0;
         countAddr <= (ns == execute) ? (countAddr + 1) : 0;
@@ -60,9 +59,6 @@ module myFIRctrl (clk, rst, inputValid, outputValid, address, flush, shift);
 
 
     always @(posedge clk, posedge rst) begin: next_state
-=======
-    always @(posedge clk) begin
->>>>>>> parent of ed73973 (changes from backup files uploaded)
         if(rst)
             ps <= input_valid;
         else

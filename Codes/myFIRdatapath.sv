@@ -66,18 +66,6 @@ module myFIRdatapath(din, address, dout, clk, rst, shift, flush);
         .regOut(result)
     );
 
-<<<<<<< HEAD
-=======
-    Register #(OutputWidth) ResultPipe
-    (
-        .clk(clk),
-        .rst((rst | flush)),
-        .ld(1'b1),
-        .regIn(result),
-        .regOut(resPipe)
-    );
-
->>>>>>> parent of ed73973 (changes from backup files uploaded)
     assign dout = result;
 
 endmodule

@@ -10,11 +10,7 @@ module shift_reg(clk, shift, rst, din, address, dout);
     assign J[0] = din;
     genvar i;
     generate
-<<<<<<< HEAD
         for(i = 0; i < size; i = i + 1) begin: shift_reg_file
-=======
-        for(i = 0; i < 64; i = i + 1) begin
->>>>>>> parent of ed73973 (changes from backup files uploaded)
             Register #(dataWidth) RXX (.clk(clk), .rst(rst), .ld(shift), .regIn(J[i]), .regOut(J[i+1]));
         end
     endgenerate

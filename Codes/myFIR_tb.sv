@@ -1,11 +1,7 @@
 `timescale 1ns/1ns
 module myFIR_tb;
 
-<<<<<<< HEAD
     parameter InputWidth = 16, OutputWidth = 38,  FIR_size = 64, memLength = 221184;
-=======
-    parameter InputWidth = 16, OutputWidth = 38, memLength = 221184;
->>>>>>> parent of ed73973 (changes from backup files uploaded)
 
     logic [InputWidth-1:0]   din;
     wire  [OutputWidth-1:0]  dout;
