@@ -25,9 +25,12 @@ module myFIR_tb;
 
     initial begin
         $readmemb("inputs.txt", input_data);
-        $readmemb("outputs.txt", input_data);
     end
 
+    initial begin
+        $readmemb("outputs.txt", expected_outputs);
+    end
+    
     localparam period = 20;
     always #(period/2) clkk <= ~clkk;
 
@@ -67,6 +70,11 @@ module myFIR_tb;
     end
 
     //assertions begin >>
+
+    property outVal;
+        @(posedge clkk) $rose(outputValid) |-> (temp_out == expected_outputs[inputCount-1]);
+    endproperty
+    checkOut: assert property (outVal) $display($stime,,,"\t\tPASS"); else $display($stime,,,"\tproperty FAIL");
 
     //assertions end.
 
