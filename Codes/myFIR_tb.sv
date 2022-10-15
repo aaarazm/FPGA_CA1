@@ -30,7 +30,7 @@ module myFIR_tb;
     initial begin
         $readmemb("outputs.txt", expected_outputs);
     end
-    
+
     localparam period = 20;
     always #(period/2) clkk <= ~clkk;
 
@@ -74,7 +74,23 @@ module myFIR_tb;
     property outVal;
         @(posedge clkk) $rose(outputValid) |-> (temp_out == expected_outputs[inputCount-1]);
     endproperty
-    checkOut: assert property (outVal) $display($stime,,,"\t\tPASS"); else $display($stime,,,"\tproperty FAIL");
+    checkOut: assert property (outVal) $display($stime,,,"\t\tOut PASS"); else $display($stime,,,"\tOutput FAIL");
+
+    property checkMult;
+        @(posedge clkk) disable iff(inputCount > 4) (1'b1==1'b1) |->((uut1.uut1.mult1.a * uut1.uut1.mult1.b) == uut1.uut1.mult1.res);
+    endproperty
+    checkingMult: assert property (checkMult) $display($stime,,,"\t\tMult PASS"); else $display($stime,,,"\tMult FAIL");
+
+    property checkAdd;
+        @(posedge clkk) disable iff(inputCount > 4) (1'b1==1'b1) |->((uut1.uut1.add1.a + uut1.uut1.add1.b) == uut1.uut1.add1.res);
+    endproperty
+    checkingAdd: assert property (checkAdd) $display($stime,,,"\t\tAdd PASS"); else $display($stime,,,"\tAdd FAIL");
+
+    property checkCtrlAddr;
+        @(posedge clkk) disable iff(inputCount > 6) (uut1.uut2.ps == 3) |-> ($past(uut1.uut2.countAddr) == (uut1.uut2.countAddr-1));
+    endproperty
+    checkingCtrlAddr: assert property (checkCtrlAddr) $display($stime,,,"\t\tCounter is counting!"); 
+    else $display($stime,,,"\tCounter isn't counting");
 
     //assertions end.
 
