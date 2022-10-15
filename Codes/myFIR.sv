@@ -1,6 +1,6 @@
 module myFIR(clk, rst, inputValid, FIR_input, outputValid, FIR_output);
 
-    parameter InputWidth = 50, OutputWidth = 50, FIR_size = 100;
+    parameter InputWidth = 16, OutputWidth = 16, FIR_size = 100;
     localparam address_size = $clog2(FIR_size);
 
     input clk, rst, inputValid;

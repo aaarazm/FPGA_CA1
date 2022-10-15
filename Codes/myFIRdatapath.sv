@@ -1,10 +1,11 @@
 module myFIRdatapath(din, address, dout, clk, rst, shift, flush, freeze);
 
     parameter InputWidth = 16, OutputWidth = 38, FIR_size = 64;
+    localparam address_size = $clog2(FIR_size);
 
     input clk, rst, shift, flush, freeze;
     input  [InputWidth-1:0]   din;
-    input  [5:0]              address;
+    input  [address_size-1:0] address;
     output [OutputWidth-1:0]  dout;
 
     logic [InputWidth-1:0]    coeffs [0:FIR_size-1];
