@@ -92,6 +92,14 @@ module myFIR_tb;
     checkingCtrlAddr: assert property (checkCtrlAddr) $display($stime,,,"\t\tCounter is counting!"); 
     else $display($stime,,,"\tCounter isn't counting");
 
+    sequence stateSeq;
+        (uut1.uut2.ps == 1) ##1 (uut1.uut2.ps == 2) ##1 (uut1.uut2.ps == 3) [*64];
+    endsequence
+    property inpVal;
+        @(posedge clkk) disable iff(inputCount > 40) $rose(inputValid) |=> stateSeq;
+    endproperty
+    checkStates: assert property (inpVal) $display($stime,,,"\t\tController PASS"); else $display($stime,,,"\tController FAIL");
+
     //assertions end.
 
 endmodule

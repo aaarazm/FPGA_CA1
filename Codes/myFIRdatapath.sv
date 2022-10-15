@@ -3,20 +3,20 @@ module myFIRdatapath(din, address, dout, clk, rst, shift, flush, freeze);
     parameter InputWidth = 16, OutputWidth = 38, FIR_size = 64;
 
     input clk, rst, shift, flush, freeze;
-    input  [InputWidth-1:0]  din;
-    input  [5:0]             address;
-    output [OutputWidth-1:0] dout;
+    input  [InputWidth-1:0]   din;
+    input  [5:0]              address;
+    output [OutputWidth-1:0]  dout;
 
-    logic [InputWidth-1:0]  coeffs [0:FIR_size-1];
+    logic [InputWidth-1:0]    coeffs [0:FIR_size-1];
 
     wire [InputWidth-1:0]     inpBufferOut;
     wire [(InputWidth*2)-1:0] multRes, multResPipe;
     wire [OutputWidth-1:0]    multResExtended, addRes, result;
 
-    initial
-    begin
-    $readmemb("coeffs.txt", coeffs);
-    end
+    // initial
+    // begin
+    // $readmemb("coeffs.txt", coeffs);
+    // end
 
     shift_reg #(InputWidth, FIR_size) inpBuffer
     (
