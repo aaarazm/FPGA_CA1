@@ -14,10 +14,10 @@ module myFIRdatapath(din, address, dout, clk, rst, shift, flush, freeze);
     wire [(InputWidth*2)-1:0] multRes, multResPipe;
     wire [OutputWidth-1:0]    multResExtended, addRes, result;
 
-    // initial
-    // begin
-    // $readmemb("coeffs.txt", coeffs);
-    // end
+    initial
+    begin
+    $readmemb("coeffs.txt", coeffs);
+    end
 
     shift_reg #(InputWidth, FIR_size) inpBuffer
     (
